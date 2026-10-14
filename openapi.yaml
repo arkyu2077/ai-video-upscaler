@@ -1,0 +1,272 @@
+openapi: 3.1.0
+info:
+  title: VideoUpscaler API
+  version: 1.0.0
+  summary: AI video upscaler API. Upscale videos to 1080p, 2K or 4K.
+  description: |
+    Upscale videos to 1080p, 2K or 4K with AI. Credits are charged per second of video
+    (1080p: 1, 2k: 2, 4k: 3) when a task is created and refunded if it fails.
+    Available to accounts that have bought credits or subscribed.
+    Full guide: https://videoupscaler.co/docs
+  contact:
+    name: VideoUpscaler
+    url: https://videoupscaler.co
+  license:
+    name: MIT (this specification)
+    identifier: MIT
+externalDocs:
+  url: https://videoupscaler.co/docs
+servers:
+  - url: https://videoupscaler.co/api/v1
+security:
+  - apiKey: []
+tags:
+  - name: Upscale
+  - name: Tasks
+  - name: Uploads
+  - name: Account
+paths:
+  /upscale:
+    post:
+      tags: [Upscale]
+      operationId: createUpscale
+      summary: Create an upscale
+      description: |
+        Downloads the video, reads its real duration, charges credits and starts the job.
+        A large remote file can take a while; allow up to 5 minutes before timing out.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          description: 1–255 printable ASCII characters. Retrying with the same key and parameters returns the original task without charging again.
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [video_url, resolution]
+              properties:
+                video_url:
+                  type: string
+                  format: uri
+                  description: Public http(s) URL of an MP4, MOV or WebM video (up to 500MB), or the video_url returned by /uploads.
+                resolution:
+                  $ref: '#/components/schemas/Resolution'
+            example:
+              video_url: https://example.com/clip.mp4
+              resolution: 2k
+      responses:
+        '201':
+          description: Task created and charged
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '200':
+          description: Same Idempotency-Key and parameters as an earlier request; the original task is returned and nothing is charged
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '400': { $ref: '#/components/responses/Error' }
+        '401': { $ref: '#/components/responses/Error' }
+        '402': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '409': { $ref: '#/components/responses/Error' }
+        '413': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+        '429': { $ref: '#/components/responses/Error' }
+        '504': { $ref: '#/components/responses/Error' }
+  /tasks:
+    get:
+      tags: [Tasks]
+      operationId: listTasks
+      summary: List tasks
+      description: Tasks newest first, including ones created on the website.
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+      responses:
+        '200':
+          description: A page of tasks
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, page, limit, total, has_more]
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/Task' }
+                  page: { type: integer }
+                  limit: { type: integer }
+                  total: { type: integer }
+                  has_more: { type: boolean }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+  /tasks/{id}:
+    get:
+      tags: [Tasks]
+      operationId: getTask
+      summary: Get a task
+      description: Poll every 5–10 seconds while the task is queued or processing.
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: The task
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+  /tasks/{id}/events:
+    get:
+      tags: [Tasks]
+      operationId: streamTaskEvents
+      summary: Stream task events
+      description: |
+        Redirects (302) to a signed Server-Sent Events stream. Events: `status` ({id, status}),
+        `completed` and `failed` (the full task), `timeout` (after 10 minutes; reconnect if still running).
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '302':
+          description: Redirect to the signed event stream
+          headers:
+            Location:
+              schema: { type: string, format: uri }
+        '401': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+  /account:
+    get:
+      tags: [Account]
+      operationId: getAccount
+      summary: Get credit balance and prices
+      responses:
+        '200':
+          description: Balance and price per second
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [credits, credits_per_second]
+                properties:
+                  credits: { type: integer }
+                  credits_per_second:
+                    type: object
+                    properties:
+                      1080p: { type: integer }
+                      2k: { type: integer }
+                      4k: { type: integer }
+              example:
+                credits: 1240
+                credits_per_second: { 1080p: 1, 2k: 2, 4k: 3 }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+  /uploads:
+    post:
+      tags: [Uploads]
+      operationId: createUpload
+      summary: Get a signed upload URL
+      description: |
+        For local files (up to 100MB). PUT the file to `upload_url` with the returned `headers`
+        and no Authorization header, then pass `video_url` to /upscale. The URL expires in 1 hour.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content_type, size]
+              properties:
+                content_type:
+                  type: string
+                  enum: [video/mp4, video/quicktime, video/webm]
+                size:
+                  type: integer
+                  minimum: 1
+                  maximum: 104857600
+                  description: File size in bytes
+      responses:
+        '201':
+          description: Signed upload URL
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [upload_url, method, headers, video_url, max_bytes, expires_at]
+                properties:
+                  upload_url: { type: string, format: uri }
+                  method: { type: string, enum: [PUT] }
+                  headers:
+                    type: object
+                    additionalProperties: { type: string }
+                  video_url: { type: string, format: uri }
+                  max_bytes: { type: integer }
+                  expires_at: { type: string, format: date-time }
+        '400': { $ref: '#/components/responses/Error' }
+        '401': { $ref: '#/components/responses/Error' }
+        '402': { $ref: '#/components/responses/Error' }
+        '403': { $ref: '#/components/responses/Error' }
+        '413': { $ref: '#/components/responses/Error' }
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'API key from Settings → API Keys, sent as "Authorization: Bearer vu_live_..."'
+  parameters:
+    TaskId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string }
+  schemas:
+    Resolution:
+      type: string
+      enum: [1080p, 2k, 4k]
+    Task:
+      type: object
+      required: [id, status, resolution, video_url, duration_seconds, processed_seconds, credits_charged, watermark, output_url, thumbnail_url, error, created_at, updated_at]
+      properties:
+        id: { type: string }
+        status:
+          type: string
+          enum: [queued, processing, completed, failed]
+        resolution: { $ref: '#/components/schemas/Resolution' }
+        video_url: { type: string }
+        duration_seconds: { type: number }
+        processed_seconds: { type: number }
+        credits_charged: { type: integer }
+        watermark: { type: boolean }
+        output_url: { type: [string, 'null'] }
+        thumbnail_url: { type: [string, 'null'] }
+        error: { type: [string, 'null'] }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              description: Stable machine-readable code, e.g. insufficient_credits, paid_plan_required, video_too_long
+            message: { type: string }
+  responses:
+    Error:
+      description: Error. See https://videoupscaler.co/docs/errors
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
