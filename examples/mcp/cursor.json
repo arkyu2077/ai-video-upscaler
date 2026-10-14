@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "videoupscaler": {
+      "url": "https://videoupscaler.co/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:VIDEOUPSCALER_API_KEY}"
+      }
+    }
+  }
+}
