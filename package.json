@@ -1,0 +1,49 @@
+{
+  "name": "videoupscaler-mcp",
+  "version": "0.1.0",
+  "description": "Official Model Context Protocol (MCP) server for VideoUpscaler (videoupscaler.co) — upscale videos to 1080p, 2K, or 4K with FlashVSR AI video super-resolution, frame interpolation, face restoration, and HDR.",
+  "type": "module",
+  "bin": {
+    "videoupscaler-mcp": "bin/videoupscaler-mcp.mjs"
+  },
+  "main": "bin/videoupscaler-mcp.mjs",
+  "files": [
+    "bin/",
+    "server.json",
+    "openapi.yaml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/videoupscaler-mcp.mjs",
+    "test": "node bin/videoupscaler-mcp.mjs --help"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "videoupscaler",
+    "video-upscaler",
+    "ai-video-upscaler",
+    "video-super-resolution",
+    "flashvsr",
+    "4k-upscaler",
+    "claude",
+    "cursor",
+    "ai-agent"
+  ],
+  "homepage": "https://videoupscaler.co/docs/mcp",
+  "bugs": {
+    "url": "https://github.com/arkyu2077/ai-video-upscaler/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arkyu2077/ai-video-upscaler.git"
+  },
+  "license": "MIT",
+  "author": "VideoUpscaler <support@videoupscaler.co> (https://videoupscaler.co)",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "mcpName": "io.github.arkyu2077/videoupscaler"
+}

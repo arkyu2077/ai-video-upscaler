@@ -87,7 +87,23 @@ Free results carry a small "videoupscaler.co" watermark. After your first purcha
 
 Best for: people who already work in Claude, Cursor or VS Code and want to say *"upscale this video to 4K"* instead of opening a website.
 
-**Server URL:** `https://videoupscaler.co/api/mcp` (Streamable HTTP). It's listed in the official [MCP Registry](https://registry.modelcontextprotocol.io) as `co.videoupscaler/video-upscaler`.
+**Two ways to connect:**
+- **Remote Streamable HTTP:** `https://videoupscaler.co/api/mcp` (listed in the [MCP Registry](https://registry.modelcontextprotocol.io) as `co.videoupscaler/video-upscaler`)
+- **Local stdio via npm (`videoupscaler-mcp`):** `npx -y videoupscaler-mcp` with `VIDEOUPSCALER_API_KEY` ([npm package](https://www.npmjs.com/package/videoupscaler-mcp))
+
+```json
+{
+  "mcpServers": {
+    "videoupscaler": {
+      "command": "npx",
+      "args": ["-y", "videoupscaler-mcp"],
+      "env": {
+        "VIDEOUPSCALER_API_KEY": "vu_live_..."
+      }
+    }
+  }
+}
+```
 
 Most clients connect by signing in: add the URL, a browser window opens, you sign in to VideoUpscaler and click **Allow**. Clients that can't sign in use an API key from [Settings → API Keys](https://videoupscaler.co/sign-in?callbackUrl=%2Fsettings%2Fapikeys).
 
