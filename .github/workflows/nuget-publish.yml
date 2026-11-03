@@ -1,0 +1,30 @@
+name: Publish NuGet Package
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'dotnet/**'
+      - '.github/workflows/nuget-publish.yml'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: NuGet Login (Trusted Publishing OIDC)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: arkyu2077
+      - name: Push Packages to NuGet.org
+        run: |
+          dotnet nuget push "dotnet/*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
