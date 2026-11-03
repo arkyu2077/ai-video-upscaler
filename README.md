@@ -4,6 +4,8 @@
 
 <h1 align="center">AI Video Upscaler</h1>
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/arkyu2077/ai-video-upscaler/blob/main/examples/4K_AI_Video_Upscaling_Colab_Tutorial.ipynb)
+
 <p align="center">
   Turn blurry, low-resolution video into sharp <b>1080p, 2K or 4K</b>, in your browser, from your code, or by asking your AI assistant.
 </p>

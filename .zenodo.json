@@ -1,0 +1,44 @@
+{
+  "title": "VideoUpscaler: Cloud-Native AI Video Super-Resolution, 4K Upscaling, and MCP Server",
+  "description": "Official Model Context Protocol (MCP) server, OpenAPI specification, Colab notebooks, and developer workflows for VideoUpscaler (https://videoupscaler.co) \u2014 upscale and restore video to 1080p, 2K, and 4K 60fps with temporal AI super-resolution, denoising, frame interpolation, and stabilization.",
+  "upload_type": "software",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Yu, Ark",
+      "affiliation": "VideoUpscaler (https://videoupscaler.co)"
+    }
+  ],
+  "keywords": [
+    "video-upscaling",
+    "super-resolution",
+    "4k-video-upscaler",
+    "batch-video-upscaler",
+    "video-enhancement",
+    "frame-interpolation",
+    "mcp"
+  ],
+  "url": "https://videoupscaler.co",
+  "related_identifiers": [
+    {
+      "identifier": "https://videoupscaler.co",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://videoupscaler.co/4k-video-upscaler",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://videoupscaler.co/docs/workflows",
+      "relation": "isDocumentedBy",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://github.com/arkyu2077/ai-video-upscaler",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    }
+  ]
+}
