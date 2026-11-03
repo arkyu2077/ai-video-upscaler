@@ -1,29 +1,31 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.arkyu2077/videoupscaler",
-  "description": "Official MCP server for VideoUpscaler (videoupscaler.co) — upscale videos to 1080p, 2K, or 4K with FlashVSR AI video super-resolution.",
+  "title": "VideoUpscaler AI Video Upscaler (4K/60fps)",
+  "description": "Upscale and enhance videos to 1080p, 2K, or 4K (60fps) via the VideoUpscaler AI API.",
+  "websiteUrl": "https://videoupscaler.co",
+  "repository": {
+    "url": "https://github.com/arkyu2077/ai-video-upscaler",
+    "source": "github"
+  },
   "version": "0.1.0",
-  "homepage": "https://videoupscaler.co",
-  "repository": "https://github.com/arkyu2077/ai-video-upscaler",
   "packages": [
     {
-      "registry_name": "npm",
-      "name": "videoupscaler-mcp",
+      "registryType": "npm",
+      "identifier": "videoupscaler-mcp",
       "version": "0.1.0",
-      "environment_variables": [
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
         {
           "name": "VIDEOUPSCALER_API_KEY",
-          "description": "Your VideoUpscaler API key (vu_live_...) from https://videoupscaler.co/settings/apikeys",
-          "is_required": true,
-          "is_secret": true
+          "description": "Your VideoUpscaler API key (create one at https://videoupscaler.co)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
         }
       ]
-    }
-  ],
-  "remotes": [
-    {
-      "transport_type": "streamable-http",
-      "url": "https://videoupscaler.co/api/mcp"
     }
   ]
 }
