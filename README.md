@@ -12,6 +12,7 @@
   <a href="https://videoupscaler.co"><b>Try it free</b></a> ·
   <a href="https://videoupscaler.co/docs">API docs</a> ·
   <a href="https://videoupscaler.co/docs/mcp">MCP server</a> ·
+  <a href="https://videoupscaler.co/integrations">Integrations &amp; n8n</a> ·
   <a href="https://videoupscaler.co/pricing">Pricing</a>
 </p>
 
@@ -31,6 +32,7 @@ This repository is the public home of the product: how to use it, which AI model
   - [1. Website (no code)](#1-website-no-code)
   - [2. MCP server (ask your AI assistant)](#2-mcp-server-ask-your-ai-assistant)
   - [3. REST API (for developers)](#3-rest-api-for-developers)
+  - [4. Workflow Automation & n8n Integration](#4-workflow-automation--n8n-integration)
 - [The AI model](#the-ai-model)
 - [Pricing](#pricing)
 - [Limits](#limits)
@@ -198,6 +200,21 @@ Full examples: [curl](examples/curl.sh) · [Node.js](examples/node.mjs) · [Pyth
 
 Videos that aren't online yet: call `POST /api/v1/uploads`, `PUT` the file to the returned `upload_url`, then pass the returned `video_url` to `/upscale` (see the [Node.js example](examples/node.mjs)).
 
+### 4. Workflow Automation & n8n Integration
+
+Best for: no-code/low-code media pipelines in **n8n**, **Make.com**, and **Zapier** (e.g., automatically upscaling AI-generated clips from Sora, Runway, Kling, or Veo to 4K before publishing to YouTube, TikTok, or Google Drive).
+
+- **Official n8n Community Node**: [`n8n-nodes-videoupscaler`](https://www.npmjs.com/package/n8n-nodes-videoupscaler) ([GitHub repository](https://github.com/arkyu2077/n8n-nodes-videoupscaler))
+  - Install in self-hosted n8n via **Settings → Community Nodes → Install** → `n8n-nodes-videoupscaler`
+- **Ready-to-Import Workflow Templates** ([browse in `examples/workflows/`](examples/workflows)):
+  - [`n8n-videoupscaler-workflow.json`](examples/workflows/n8n-videoupscaler-workflow.json) — Self-documenting zero-install `HTTP Request` + server-side long-polling (`?wait=45`) workflow (works on both n8n Cloud & self-hosted)
+  - [`n8n-videoupscaler-webhook-workflow.json`](examples/workflows/n8n-videoupscaler-webhook-workflow.json) — Zero-polling async webhook callback pipeline (`X-VideoUpscaler-Event: task.completed`)
+  - [`n8n-videoupscaler-node-workflow.json`](examples/workflows/n8n-videoupscaler-node-workflow.json) — 3-node pipeline using the official `n8n-nodes-videoupscaler` community node
+  - [`make-videoupscaler-blueprint.json`](examples/workflows/make-videoupscaler-blueprint.json) — Make.com 2-module scenario blueprint
+- **Documentation & Guides**:
+  - [Integrations Hub (`videoupscaler.co/integrations`)](https://videoupscaler.co/integrations)
+  - [Workflow Automation Guide (`videoupscaler.co/docs/workflows`)](https://videoupscaler.co/docs/workflows)
+
 ## The AI model
 
 VideoUpscaler runs **[FlashVSR](https://github.com/OpenImagingLab/FlashVSR)**, a diffusion-based video super-resolution model (CVPR 2026, Apache-2.0).
@@ -266,6 +283,9 @@ The API and MCP upscaling tools are for accounts that have bought credits or sub
 - Website: [videoupscaler.co](https://videoupscaler.co)
 - API reference: [videoupscaler.co/docs](https://videoupscaler.co/docs)
 - MCP setup: [videoupscaler.co/docs/mcp](https://videoupscaler.co/docs/mcp)
+- Integrations Hub: [videoupscaler.co/integrations](https://videoupscaler.co/integrations)
+- Workflow Automation Docs: [videoupscaler.co/docs/workflows](https://videoupscaler.co/docs/workflows)
+- Official n8n Node: [npmjs.com/package/n8n-nodes-videoupscaler](https://www.npmjs.com/package/n8n-nodes-videoupscaler) · [github.com/arkyu2077/n8n-nodes-videoupscaler](https://github.com/arkyu2077/n8n-nodes-videoupscaler)
 - Blog: [videoupscaler.co/blog](https://videoupscaler.co/blog)
 
 The examples and docs in this repository are MIT-licensed. The VideoUpscaler service itself is a hosted product; see the website's terms.

@@ -1,0 +1,13 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    required:
+      - apiKey
+    properties:
+      apiKey:
+        type: string
+        description: Your VideoUpscaler API key (vu_live_...) from https://videoupscaler.co/settings/apikeys
+  exampleConfig:
+    apiKey: vu_live_example_key_123456
