@@ -1,15 +1,8 @@
-site_name: VideoUpscaler AI Documentation
-site_description: Official developer documentation, MCP server, and 4K AI video super-resolution workflows for VideoUpscaler (https://videoupscaler.co).
-site_url: https://videoupscaler.co/docs/workflows
+site_name: VideoUpscaler 4K AI Video Enhancement & Workflow Docs
+site_url: https://videoupscaler.co/
 repo_url: https://github.com/arkyu2077/ai-video-upscaler
-repo_name: arkyu2077/ai-video-upscaler
-edit_uri: blob/main/
-docs_dir: .
-
+site_description: Official developer documentation for VideoUpscaler (videoupscaler.co) — 4K AI Video Upscaler, Batch Video Upscaler, Temporal Denoising, 60FPS Frame Interpolation, Stabilization, and n8n/Make/Zapier/MCP Workflows.
 nav:
-  - Home: README.md
-  - AI Video Upscaler Platform: https://videoupscaler.co
-  - 4K Video Upscaler: https://videoupscaler.co/4k-video-upscaler
-  - Batch Video Upscaler: https://videoupscaler.co/batch-video-upscaler
-  - Workflow & API Docs: https://videoupscaler.co/docs/workflows
-  - Integrations (n8n & MCP): https://videoupscaler.co/integrations
+  - Home & Overview: index.md
+  - 4K Video Upscaling & Restoration: pipeline.md
+  - Workflow Automation (n8n, Make, Zapier, MCP): workflows.md
