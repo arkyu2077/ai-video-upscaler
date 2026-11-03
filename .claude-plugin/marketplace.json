@@ -1,0 +1,26 @@
+{
+  "name": "videoupscaler",
+  "owner": {
+    "name": "VideoUpscaler",
+    "url": "https://videoupscaler.co"
+  },
+  "metadata": {
+    "description": "AI video upscaler and enhancer to 1080p, 2K, and 4K at up to 60fps via remote MCP and REST API.",
+    "homepage": "https://videoupscaler.co"
+  },
+  "plugins": [
+    {
+      "name": "video-upscaler",
+      "description": "Upscale and unblur videos to 1080p, 2K, or 4K with AI super-resolution via the VideoUpscaler remote MCP server and skill.",
+      "version": "1.0.0",
+      "author": {
+        "name": "VideoUpscaler",
+        "url": "https://videoupscaler.co"
+      },
+      "homepage": "https://videoupscaler.co",
+      "repository": "https://github.com/arkyu2077/ai-video-upscaler",
+      "category": "Media & Video",
+      "source": "./plugins/video-upscaler"
+    }
+  ]
+}

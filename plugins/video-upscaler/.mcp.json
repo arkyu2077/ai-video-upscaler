@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "videoupscaler": {
+      "type": "http",
+      "url": "https://videoupscaler.co/api/mcp"
+    }
+  }
+}
